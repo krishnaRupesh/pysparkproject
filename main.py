@@ -2,7 +2,7 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-from pyspark.sql.types import MapType, StringType
+from pyspark.sql.types import MapType, StringType, IntegerType,FloatType,DoubleType,StructField,StructType,BooleanType
 
 from pyspark.sql.functions import col, when, concat_ws, lit, from_json
 
@@ -14,29 +14,270 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# def print_hi(name):
+#     # Use a breakpoint in the code line below to debug your script.
+#     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+#
+#
+# # Press the green button in the gutter to run the script.
+# if __name__ == '__main__':
+#     print_hi('PyCharm')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
 
-spark = SparkSession.builder.getOrCreate()
-spark.conf.set("spark.sql.legacy.timeParserPolicy", "LEGACY")
+# spark = SparkSession.builder.getOrCreate()
+# spark.conf.set("spark.sql.legacy.timeParserPolicy", "LEGACY")
 
-data1 = [["1", "02-01-2020 11 01 19 06", "XX84", "100", "1"], ["2", "02-01-2020 11 02 19 406", "XX84", "100", "1"],
-        ["3", "02-01-2020 11 03 19 406", "YX84", "104", "3"]]
+# # data1 = [["1", "02-01-2020 11 01 19 06", "XX84", "100", "1"], ["2", "02-01-2020 11 02 19 406", "XX84", "100", "1"],
+# #         ["3", "02-01-2020 11 03 19 406", "YX84", "104", "3"]]
+# #
+# data = [[1, "20221110050957", "20221110050957123", "XX84", "100", "1;100"], [2, "20221110050957", "20221110", "XX84", "100", "3;100"],
+#         [3, "20221110050957", "20221110050957", "YX84", "104", "3;104"]]
+# df2 = spark.createDataFrame(data, ["id", "input", "new_input", "card_no", "ipaddress", "new_id"])
 
-data = [["1", "20221110050957", "20221110050957123", "XX84", "100", "1;100"], ["2", "20221110050957", "20221110", "XX84", "100", "3;100"],
-        ["3", "20221110050957", "20221110050957", "YX84", "104", "3;104"]]
-df2 = spark.createDataFrame(data, ["id", "input", "new_input", "card_no", "ipaddress", "new_id"])
+# df2.show()
+
+# df3 = df2.withColumn("is_transaction", lit(True))
+#
+# df3.show()
+# df3.printSchema()
+
+# df3 = df2.withColumn("odd_even", when(col("id")%2 == 0, lit("even")).when(col("id")%2 == 1, lit("odd")).otherwise(lit("undefined")))
+#
+# df3.show()
+#
+# divisible_by both 2 and 4
+# is_divisible by 4
+# is_divisiber by 2,
+# not_divisibal by anything
+
+# df3 = df2.withColumn("timesamp", to_timestamp(col("input"),"yyyyMMddHHmmss"))
+# df3 = df2.withColumn("timesamp", (col("input").cast(DoubleType())))
+# df3.show()
+# df3.printSchema()
+
+# arrayStructureData = [
+#     (("James", "", "Smith"), ["Java", "Scala", "C++"], "OH", "M"),
+#     (("Anna", "Rose", ""), ["Spark", "Java", "C++"], "NY", "F"),
+#     (("Julia", "", "Williams"), ["CSharp", "VB"], "OH", "F"),
+#     (("Maria", "Anne", "Jones"), ["CSharp", "VB"], "NY", "M"),
+#     (("Jen", "Mary", "Brown"), ["CSharp", "VB"], "NY", "M"),
+#     (("Mike", "Mary", "Williams"), ["Python", "VB"], "OH", "M")
+# ]
+#
+# arrayStructureSchema = StructType([
+#     StructField('name', StructType([
+#         StructField('firstname', StringType(), True),
+#         StructField('middlename', StringType(), True),
+#         StructField('lastname', StringType(), True)
+#     ])),
+#     StructField('languages', ArrayType(StringType()), True),
+#     StructField('state', StringType(), True),
+#     StructField('gender', StringType(), True)
+# ])
+# #
+# df = spark.createDataFrame(data=arrayStructureData, schema=arrayStructureSchema)
+# df.printSchema()
+# df.show(truncate=False)
+#
+# df.filter(df.state == "OH") \
+#     .show(truncate=False)
+# #
+# df.filter(col("state") == "OH") \
+#     .show(truncate=False)
+#
+# df.filter("gender  == 'M'") \
+#     .show(truncate=False)
+# #
+# df.filter((df.state == "OH") | (df.gender == "M")) \
+#     .show(truncate=False)
+# #
+# df.filter(array_contains(df.languages, "Java")) \
+#     .show(truncate=False)
+# #
+# df.filter(df.name.lastname == "Williams") \
+#     .show(truncate=False)
+#
+# df.filter(df.gender != 'M').show()
+# df.filter(("df.gender <> 'M'")).show()
+#
+# states = ["OH","NY"]
+# df.filter(~(df.state.isin(states)))
+#
+# df.filter(df.state.like("%O%"))
+#
+# df.sort("state","gender").show()
 
 
+# df.select(df.name,explode_outer(df.languages)).show()
+#
+# a = ["java","scala",None,"beta"]
+#
+# print(len(a))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# dataDF = [(('James','','Smith'),'1991-04-01','M',3000),
+#   (('Michael','Rose',''),'2000-05-19','M',4000),
+#   (('Robert','','Williams'),'1978-09-05','M',4000),
+#   (('Maria','Anne','Jones'),'1967-12-01','F',4000),
+#   (('Jen','Mary','Brown'),'1980-02-17','F',-1)
+# ]
+#
+# from pyspark.sql.types import StructType,StructField, StringType, IntegerType
+# schema = StructType([
+#         StructField('name', StructType([
+#              StructField('firstname', StringType(), True),
+#              StructField('middlename', StringType(), True),
+#              StructField('lastname', StringType(), True)
+#              ])),
+#          StructField('dob', StringType(), True),
+#          StructField('gender', StringType(), True),
+#          StructField('salary', IntegerType(), True)
+#          ])
+#
+# df = spark.createDataFrame(data = dataDF, schema = schema)
+#
+# df1 = df.withColumnRenamed("dob","DateOfBirth") # rdd (DAG)
+#
+# df1.printSchema()
+#
+# df2 = df1.withColumnRenamed("dob","DateOfBirth").withColumnRenamed("salary","salary_amount")
+# df2.printSchema()
+#
+#
+#
+# from pyspark.sql.functions import *
+# df.select(col("name.firstname").alias("fname"), \
+#   col("name.middlename").alias("mname"), \
+#   col("name.lastname").alias("lname"), \
+#   col("dob"),col("gender"),col("salary")) \
+#   .printSchema()
+#
+# df.select(col("dob"),col("gender"),col("salary")).show()
+#
+#
+# #
+#
+# df4 = df.withColumn("fname",col("name.firstname")) \
+#       .withColumn("mname",col("name.middlename")) \
+#       .withColumn("lname",col("name.lastname")) \
+#       .drop("name")
+# df4.printSchema()
+# #
+# newColumns = ["newCol1","newCol2","newCol3","newCol4"]
+# df.toDF(*newColumns).printSchema()
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# df2.show()
+
+# journey = spark.read.option("header","true").csv(r"C:\Users\krishnan\Downloads\JOURNETSELECTED_20240117_124251.csv")
+#
+# assetjourney = journey.select("ASSETID").distinct()
+#
+# view = spark.read.option("header","true").csv(r"C:\Users\krishnan\Downloads\selectjourneyview_20240117_124611.csv")
+# assetview = view.select("ASSETID").distinct()
+#
+# data = assetjourney.join(assetview, assetview.ASSETID == assetjourney.ASSETID, "left_anti")
+#
+# data.show(100,truncate=False)
+#
+# newdata = journey.join(data,journey.ASSETID == data.ASSETID)
+#
+# print(newdata.count())
+
+# scandata = spark.read.option("header","true")\
+#     .csv(r"C:\Users\krishnan\Downloads\selectscandata_20240117_133141.csv")
+# scandata.printSchema()
+# data = scandata.first()
+# print(type(data))
+# print(data)
+# print(type(data["BARCODE"]))
+# print(data["BARCODE"])
+# print(type(data["ISMANUALLYPROCESSED"]))
+# print(data["ISMANUALLYPROCESSED"])
+# print(type(data["ASSETTYPE"]))
+# print(data["ASSETTYPE"])
+# newdata = scandata.select("BARCODE","ASSETTYPE").distinct()
+#
+# print(newdata.count())
+#
+# newdata.show(100,truncate=False)
 # df3 = df2.withColumn("timestamp_col", to_timestamp(col("input"), "yyyyMMddHHmmss"))
 # df4 = df2.withColumn("timestamp_col1", to_timestamp(col("new_input"), "yyyyMMddHHmmssSSS"))
 # df5 = df4.withColumn("reg_formet",  date_format(col("timestamp_col1"), "yyyy-MM-dd hh:mm:ss"))
@@ -45,8 +286,21 @@ df2 = spark.createDataFrame(data, ["id", "input", "new_input", "card_no", "ipadd
 # df4.show(truncate=False)
 # df5.show(truncate=False)
 
-df2.show(truncate=False)
-df2.filter(~(lower(col('card_no')).contains('xx'))).show(truncate=False)
+# df2.show(truncate=False)
+# import datetime
+#
+# x = datetime.datetime.now()
+
+
+# df3 = df2.withColumn("dfsfs", lit(datetime.datetime.now()))
+# df3.show(truncate=False)
+# df3.printSchema()
+# a = df3.select(collect_list('id')).first()[0]
+#
+# print(a)
+# print(type(a))
+# print(tuple(a))
+# df2.filter(~(lower(col('card_no')).contains('xx'))).show(truncate=False)
 
 # df2.select(col("input").alias("Newer input"), col('card_no').alias('Newer Card_no')).coalesce(1).write.mode("overwrite") \
 #     .option("header", "true").csv(r'C:\Users\krishnan\Downloads\daily_data')
@@ -170,9 +424,9 @@ df2.filter(~(lower(col('card_no')).contains('xx'))).show(truncate=False)
 # df4.join(df5,(df4.card_no == df5.b_card_no) & ((df4.timestamp_col_sec > df5.one_hr) & (df4.timestamp_col_sec <= df5.b_timestamp_col_sec))).show(truncate=False)
 
 # & (df4.timestamp_col_sec > df5.b_timestamp_col_sec))
-from datetime import datetime, date
-# import pandas as pd
-from pyspark.sql import Row
+# from datetime import datetime, date
+# # import pandas as pd
+# from pyspark.sql import Row
 
 #
 # df = spark.createDataFrame([
@@ -399,3 +653,236 @@ from pyspark.sql import Row
 # }
 #
 # new_data.write.format('hudi').options(**hudi_options_pp).mode("append").save("s3://hudi-write-depo/txnv102/")
+
+
+
+
+# spark = SparkSession.builder.getOrCreate()
+
+# df = spark.read.parquet(r"C:\Users\krishnan\Downloads\sparkoutputs\zipcodes")
+# df.printSchema()
+#
+# df.show()
+#
+# parquet -> columanar data
+# not sorage
+# binaryornot
+#
+# 99
+
+
+
+
+# df = spark.read.options(header='True').csv(r"C:\Users\krishnan\Downloads\zipcodes.csv")
+# df.printSchema()
+#
+# # df.show()
+#
+#
+# # df.write.csv(r"C:\Users\krishnan\Downloads\sparkoutputs\zipcodes")
+# # #
+# # df.write.options(header='True', delimiter=',').csv(r"C:\Users\krishnan\Downloads\sparkoutputs\zipcodes")
+# # #
+# df.write.partitionBy("Country","State").mode('overwrite').options(header='True', delimiter='|').csv(r"C:\Users\krishnan\Downloads\sparkoutputs\zipcodes") # append ,ignore, error, overwrite
+# #
+# #
+
+
+# df.write.parquet(r"C:\Users\krishnan\Downloads\sparkoutputs\zipcodes_parquest")
+#
+#
+
+# multiple folders -> folder with country name
+#
+#
+import pyspark
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+#
+# spark = SparkSession.builder.appName('SparkByExamples.com').master("local[5]").getOrCreate()
+#
+# emp = [(1, "Smith", -1, "2018", "10", "M", 3000), \
+#        (2, "Rose", 1, "2010", "20", "M", 4000), \
+#        (3, "Williams", 1, "2010", "10", "M", 1000), \
+#        (4, "Jones", 2, "2005", "10", "F", 2000), \
+#        (5, "Brown", 2, "2010", "40", "", -1), \
+#        (6, "Brown", 2, "2010", "50", "", -1) \
+#        ]
+# empColumns = ["emp_id", "name", "superior_emp_id", "year_joined", \
+#               "emp_dept_id", "gender", "salary"]
+#
+# empDF = spark.createDataFrame(data=emp, schema=empColumns)
+# empDF.printSchema()
+# empDF.show(truncate=False)
+#
+# dept = [("Finance", 10), \
+#         ("Marketing", 20), \
+#         ("Sales", 30), \
+#         ("IT", 40) \
+#         ]
+# deptColumns = ["dept_name", "dept_id"]
+# deptDF = spark.createDataFrame(data=dept, schema=deptColumns)
+# deptDF.printSchema()
+# deptDF.show(truncate=False)
+
+# empDF.join(broadcast(deptDF), empDF.emp_dept_id == deptDF.dept_id, "inner") \
+#     .show(truncate=False)
+#
+# empDF.join(deptDF, empDF.emp_dept_id == deptDF.dept_id, "outer") \
+#     .show(truncate=False)
+# empDF.join(deptDF, empDF.emp_dept_id == deptDF.dept_id, "full") \
+#     .show(truncate=False)
+# empDF.join(deptDF, empDF.emp_dept_id == deptDF.dept_id, "fullouter") \
+#     .show(truncate=False)
+#
+# empDF.join(deptDF, empDF.emp_dept_id == deptDF.dept_id, "left") \
+#     .show(truncate=False)
+# empDF.join(deptDF, empDF.emp_dept_id == deptDF.dept_id, "leftouter") \
+#     .show(truncate=False)
+#
+# empDF.join(deptDF, empDF.emp_dept_id == deptDF.dept_id, "right") \
+#     .show(truncate=False)
+# empDF.join(deptDF, empDF.emp_dept_id == deptDF.dept_id, "rightouter") \
+#     .show(truncate=False)
+#
+# empDF.join(deptDF, empDF.emp_dept_id == deptDF.dept_id, "leftsemi") \
+#     .show(truncate=False)
+#
+# empDF.join(deptDF, empDF.emp_dept_id == deptDF.dept_id, "leftanti") \
+#     .show(truncate=False)
+
+# empDF.alias("emp1").join(empDF.alias("emp2"), \
+#                          col("emp1.superior_emp_id") == col("emp2.emp_id"), "inner") \
+#     .select(col("emp1.emp_id"), col("emp1.name"), \
+#             col("emp2.emp_id").alias("superior_emp_id"), \
+#             col("emp2.name").alias("superior_emp_name")) \
+#     .show(truncate=False)
+#
+# empDF.createOrReplaceTempView("EMP")
+# deptDF.createOrReplaceTempView("DEPT")
+#
+#
+#
+# joinDF = spark.sql("select * from EMP e, DEPT d where e.emp_dept_id == d.dept_id") \
+#     .show(truncate=False)
+#
+# joinDF2 = spark.sql("select * from EMP e INNER JOIN DEPT d ON e.emp_dept_id == d.dept_id") \
+#     .show(truncate=False)
+
+
+
+# empDF.groupby("gender").agg(count("*").alias("gender_count")).show(truncate=False)
+#
+# empDF.groupby("superior_emp_id").agg(collect_list("name").alias("employess_list")).show(truncate=False)
+#
+
+
+
+
+# from pyspark.sql.window import Window
+#
+# def1 = Window.partitionBy("emp_dept_id").orderBy("salary")
+#
+# df2 = empDF.withColumn("lead", lead("salary").over(def1)).show()
+
+
+
+
+# data  = spark.read.json(r"C:\Users\krishnan\Downloads\zipcodes.json")
+# data.printSchema()
+# data.show()
+
+# df = spark.read.format('org.apache.spark.sql.json').load(r"C:\Users\krishnan\Downloads\zipcodes.json")
+#
+# multiline_df = spark.read.option("multiline","true") \
+#       .json(r"C:\Users\krishnan\Downloads\multiline-zipcode.json")
+# multiline_df.show()
+#
+#
+# schema = StructType([
+#       StructField("RecordNumber",IntegerType(),True),
+#       StructField("Zipcode",IntegerType(),True),
+#       StructField("ZipCodeType",StringType(),True),
+#       StructField("City",StringType(),True),
+#       StructField("State",StringType(),True),
+#       StructField("LocationType",StringType(),True),
+#       StructField("Lat",DoubleType(),True),
+#       StructField("Long",DoubleType(),True),
+#       StructField("Xaxis",IntegerType(),True),
+#       StructField("Yaxis",DoubleType(),True),
+#       StructField("Zaxis",DoubleType(),True),
+#       StructField("WorldRegion",StringType(),True),
+#       StructField("Country",StringType(),True),
+#       StructField("LocationText",StringType(),True),
+#       StructField("Location",StringType(),True),
+#       StructField("Decommisioned",BooleanType(),True),
+#       StructField("TaxReturnsFiled",StringType(),True),
+#       StructField("EstimatedPopulation",IntegerType(),True),
+#       StructField("TotalWages",IntegerType(),True),
+#       StructField("Notes",StringType(),True)
+#   ])
+#
+# df_with_schema = spark.read.schema(schema) \
+#         .json(r"C:\Users\krishnan\Downloads\zipcodes.json")
+# df_with_schema.printSchema()
+# df_with_schema.show()
+#
+#
+# jsonString="""{"Zipcode":704,"ZipCodeType":"STANDARD","City":"PARC PARQUE","State":"PR"}"""
+# df=spark.createDataFrame([(1, jsonString)],["id","value"])
+# df.show(truncate=False)
+#
+# df2=df.withColumn("value",from_json(df.value,MapType(StringType(),StringType())))
+# df2.printSchema()
+# df2.show(truncate=False)
+#
+# df2.withColumn("value",to_json(col("value"))).show(truncate=False)
+#
+# from pyspark.sql.functions import json_tuple
+# df.select(col("id"),json_tuple(col("value"),"Zipcode","ZipCodeType","City")) \
+#     .toDF("id","Zipcode","ZipCodeType","City") \
+#     .show(truncate=False)
+
+from pyspark.sql.functions import get_json_object
+# df.select(col("id"),get_json_object(col("value"),"$.ZipCodeType").alias("ZipCodeType")) \
+#     .show(truncate=False)
+
+
+
+# nested_df = spark.read.json(r"C:\Users\krishnan\Downloads\nested_json.json")
+#
+# nested_df.show()
+# nested_df.printSchema()
+#
+# nested_df.select("City.city_name").show()
+
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+#
+spark = SparkSession.builder.appName('SparkByExamples.com').master("local[5]").getOrCreate()
+
+# df = spark.range(0,20)
+# print(df.rdd.getNumPartitions())
+#
+# df.write.csv(r"C:\Users\krishnan\Downloads\sparkoutput")
+#
+# df.coalesce(10)
+
+
+data = spark.read.json(r"C:\Users\krishnan\Downloads\997718cb-f559-4965-8087-706eae577e38.json")
+# data.select("movementId").show(200,truncate=False)
+data1 = data.withColumn("PREVSCANQTY", when(col("quantity") > 0, col("quantity")).otherwise(lit(None)))\
+    .withColumn("SCANQTY", when(col("quantity") < 0,(col("quantity") * -1)).otherwise(lit(None)))\
+    .select("movementId","PREVSCANQTY","SCANQTY")
+
+data1.show(200,truncate=False)
+
+# data.groupby("movementId").agg(collect_list("quantity")).show(200,truncate=False)
+#
+# data.write.mode("overwrite").option("header","true").csv(r"C:\Users\krishnan\Downloads\csv")
+
+data1.write.mode("overwrite").option("header","true").csv(r"C:\Users\krishnan\Downloads\csv1")
+
+
+
